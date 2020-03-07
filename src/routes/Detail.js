@@ -1,5 +1,30 @@
 import * as React from "react";
+import { useParams } from "react-router-dom";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
-const Detail = () => <h1>Detail</h1>;
+const GET_MOVIE = gql`
+  query getMovie($id: Int!) {
+    movie(id: $id) {
+      id
+      title
+      medium_cover_image
+      description_intro
+    }
+  }
+`;
+
+const Detail = () => {
+  const { id } = useParams();
+  const { loading, data } = useQuery(GET_MOVIE, {
+    variables: { id: parseInt(id) }
+  });
+  if (loading) {
+    return "Loading...";
+  }
+  if (data && data.movie) {
+    return <h1>{data.movie.title}</h1>;
+  }
+};
 
 export default Detail;

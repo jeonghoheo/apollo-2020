@@ -2,6 +2,7 @@ import * as React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
+import Movie from "../components/Movie";
 
 const GET_MOVIES = gql`
   {
@@ -57,6 +58,9 @@ const Home = () => {
         <SubTitle>I love GraphQL</SubTitle>
       </Header>
       {loading && <Loading>Loading...</Loading>}
+      {!loading &&
+        data.movies &&
+        data.movies.map(movie => <Movie key={movie.id} id={movie.id} />)}
     </Container>
   );
 };
